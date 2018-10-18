@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>study</display-name>
+  
+  <filter>
+  	<display-name>언어설정</display-name>
+  	<filter-name>characterEncordingFilter</filter-name>
+  	<filter-class>kr.or.nextit.common.filter.CharacterEncordingFilter</filter-class>
+  	<init-param>
+  		<param-name>encoding</param-name>
+  		<param-value>UTF-8</param-value>
+  	</init-param>
+  </filter>
+  
+  <filter-mapping>
+  	<filter-name>characterEncordingFilter</filter-name>
+  	<url-pattern>/*</url-pattern>	<!-- 모든 페이지에 적용 -->
+  </filter-mapping>
+  	<!--<url-pattern>/파일명/*</url-pattern>  파일명아래 모든 페이지에 적용 -->
+  	
+   <filter>
+  	<filter-name>sessionFilter</filter-name>
+  	<filter-class>kr.or.nextit.common.filter.SessionCheckFilter</filter-class>
+  </filter>
+  
+  <filter-mapping>
+  	<filter-name>sessionFilter</filter-name>
+  	<!-- 모든 URI 패턴에 session을 적용함 -->
+  	<!-- <url-pattern>/*</url-pattern> -->
+<!-- "/test123" path 경우만 session 처리를 하겠다 -->
+	<url-pattern>/test123/*</url-pattern> 
+  </filter-mapping> 
+  
+  <servlet>
+  	<servlet-name>hello</servlet-name>
+  	<servlet-class>kr.or.nextit.servlet.HelloServlet</servlet-class>
+  	<init-param>
+  		<param-name>hello</param-name>
+  		<param-value>nextIt Hello</param-value>
+  	</init-param>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>hello</servlet-name>
+  	<url-pattern>/hello</url-pattern>
+  </servlet-mapping>
+  
+  <context-param>
+  	<description> 힘내요 </description>
+  	<param-name>love</param-name>
+  	<param-value>true</param-value>
+  </context-param>
+  
+  <context-param>
+  	<description>로깅여부</description>
+  	<param-name>logEnabled</param-name>
+  	<param-value>true</param-value>
+  </context-param>
+
+  <context-param>
+  	<param-name>debugLevel</param-name>
+  	<param-value>4</param-value>
+  </context-param>
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>test.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <!-- session 유지시간 (분 단위) -->
+  <session-config>
+  	<session-timeout>30</session-timeout>
+  </session-config>
+  
+  <error-page>
+  	<error-code>404</error-code>
+  	<location>/error/error404.jsp</location>
+  </error-page>
+
+<!--   <error-page> -->
+<!--   	<error-code>500</error-code> -->
+<!--   	<location>/error/error500.jsp</location> -->
+<!--   </error-page> -->
+<error-page>
+	<exception-type>kr.or.nextit.common.error.BizException</exception-type>
+	<location>/error/errorBiz.jsp</location>
+</error-page>
+
+<error-page>
+	<exception-type>java.lang.RuntimeException</exception-type>
+	<location>/error/errorRuntime.jsp</location>
+</error-page>
+
+<error-page>
+	<exception-type>java.lang.Exception</exception-type>
+	<location>/error/errorException.jsp</location>
+</error-page>
+  
+</web-app>

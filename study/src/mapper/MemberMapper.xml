@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- other -> Mybatis Xml Mapper 파일임 -->
+<mapper namespace="kr.or.nextit.member.service.impl.MemberMapper">
+
+<select id="selectMemberList" parameterType="kr.or.nextit.member.MemberVO" resultType="kr.or.nextit.member.MemberVO">
+		SELECT
+		    mem_id 		as userId,
+		    mem_pw 		as userPw,
+		    mem_name 	as userName,
+		    mem_phone 	as userHp,
+		    mem_email 	as userEmail,
+		    reg_date
+		FROM
+		    tb_member2
+</select>
+
+<!-- as VO 변수명이랑 맞춰야함 -->
+<select id="selectMemberItem" resultType="kr.or.nextit.member.MemberVO" parameterType="String">
+		SELECT
+		    mem_id 		as userId,
+		    mem_pw 		as userPw,
+		    mem_name 	as userName,
+		    mem_phone 	as userHp,
+		    mem_email 	as userEmail,
+		    reg_date
+		FROM
+		    tb_member2
+		where mem_id = #{userId}
+</select>
+
+</mapper>

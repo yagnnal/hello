@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ComMapper interface 주입받음 -->
+<mapper namespace="kr.or.nextit.function.service.impl.ComMapper">
+
+<!-- mybatis-config.xml에 alias를 comCodeVo로 해서  -->
+<!-- id = method이름 parameterType = prameterType resultType = returnType -->
+<select id="getIpList" parameterType="kr.or.nextit.function.service.CommCodeVO" resultType="kr.or.nextit.function.service.CommCodeVO">
+
+
+		SELECT
+		    code_id as key,
+		    code_name as value
+		FROM
+		    tb_com_code
+		where group_id = 'IP'
+
+
+</select>
+
+<!-- parameter로 넘어온거 #{}로 가져올수 있음 ex) #{key} : vo에 key값-->
+<select id="getIpItem" parameterType="kr.or.nextit.function.service.CommCodeVO" resultType="kr.or.nextit.function.service.CommCodeVO">
+		SELECT
+		    code_id as key,
+		    code_name as value
+		FROM
+		    tb_com_code
+		where group_id = 'IP'
+		and code_id = #{key}
+</select>
+
+<insert id="insertIpItem" parameterType="kr.or.nextit.function.service.CommCodeVO">
+		INSERT INTO tb_com_code (
+		    group_id,
+		    code_id,
+		    code_name,
+		    reg_date
+		) VALUES (
+		    'IP',
+		    #{key},
+		    'D',
+		    sysdate
+		)
+
+</insert>
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.nextit.board.service.impl.BoardMapper">
+
+<!-- 공통된 부분 묶어서 사용가능 include로 사용-->
+	<sql id="selectListWhere">
+		<trim prefix="WHERE" prefixOverrides="AND | OR"> <!-- where절 처음시작할때 and/or 이면 where로 바꿔주겠다 -->	
+			
+			<if test="seqNo != null and seqNo != '' ">
+				AND seq_no = #{seqNo}
+			</if>	
+			
+			<if test="serviceType != null and serviceType != '' ">
+				AND service_type = #{serviceType}
+			</if>
+	
+			<if test="whereType != null and whereType != '' ">
+				AND ${whereType} LIKE '%' || #{searchText} || '%'
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="selectItem">
+			seq_no,
+		    service_type,
+		    title,
+		    contents,
+		    view_count,
+		    reg_date,
+		    reg_user,
+		    up_date,
+		    up_user
+	</sql>
+
+
+<insert id="insertBoardItem" parameterType="kr.or.nextit.board.service.BoardVo">
+		INSERT INTO tb_com_board (
+			<include refid="selectItem"></include>
+		) VALUES (
+		    #{seqNo},
+		    #{serviceType},
+		    #{title},
+		    #{contents},
+		    0,
+		    sysdate,
+		    #{regUser},
+		    sysdate,
+		    #{upUser}
+		)
+
+
+</insert>
+
+<select id="selectBoardList" parameterType="kr.or.nextit.board.service.BoardVo" resultType="kr.or.nextit.board.service.BoardVo">
+		SELECT
+		    seq_no,
+		    service_type,
+		    title,
+		    contents,
+		    view_count,
+		    reg_date,
+		    reg_user,
+		    up_date,
+		    up_user
+		FROM
+		    tb_com_board
+		
+		<include refid="selectListWhere"></include>
+				
+		ORDER BY reg_date desc
+</select>
+<!-- 쿼리문안에 바로 if문 쓸수있음 -->
+
+<select id="selectBoardItem" parameterType="kr.or.nextit.board.service.BoardVo" resultType="kr.or.nextit.board.service.BoardVo">
+		SELECT
+			<include refid="selectItem"></include>
+		FROM
+		    tb_com_board
+		<include refid="selectListWhere"></include>
+</select>
+
+<update id="updateBoardCountItem" parameterType="kr.or.nextit.board.service.BoardVo">
+		UPDATE tb_com_board
+		SET
+		    view_count = view_count + 1
+		WHERE
+		    seq_no = #{seqNo}
+</update>
+
+<delete id="deleteBoardItem" parameterType="String">
+		DELETE FROM tb_com_board
+		WHERE
+		    seq_no = #{seqNo}
+</delete>
+
+<update id="updateBoardItem" parameterType="kr.or.nextit.board.service.BoardVo">
+		UPDATE tb_com_board
+		SET
+		    title = #{title},
+		    contents = #{contents},
+		    up_date = sysdate,
+		    up_user = #{upUser}
+		    
+		WHERE
+		    seq_no = #{seqNo}
+</update>
+
+
+
+
+
+</mapper>
